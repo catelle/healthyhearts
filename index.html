@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0d1015" />
+    <title>Healthy Hearts Cameroon | Screening Atlas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.css" crossorigin="" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">♥</span><span>HEALTHY<br /><strong>HEARTS</strong></span></div>
+        <div class="brand-sub">CAMEROON • SCREENING ATLAS</div>
+        <nav>
+          <button class="nav-item active" data-view="overview"><span>⌂</span> Overview</button>
+          <button class="nav-item" data-view="map"><span>⌖</span> Area map</button>
+          <button class="nav-item" data-view="insights"><span>◒</span> Insights</button>
+          <button class="nav-item" data-view="details"><span>▤</span> Clinical & care</button>
+          <button class="nav-item" data-view="definitions"><span>≡</span> Definitions</button>
+          <div class="nav-divider"></div>
+          <button class="nav-item" data-view="overview" data-action="print"><span>▣</span> Printables</button>
+          <button class="nav-item" data-view="overview" data-action="feedback"><span>✎</span> Feedback</button>
+          <button class="nav-item" data-view="overview" data-action="about"><span>ⓘ</span> About</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="source-mini"><span class="dot"></span><div><b>Data source</b><small>Healthy Hearts pilot brief</small></div></div>
+          <button class="help-btn" id="helpBtn">? &nbsp; About this dashboard</button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div><p class="eyebrow">PILOT MONITORING PLATFORM</p><h1>Screening landscape</h1></div>
+          <div class="header-actions"><span class="updated">Updated from source brief · 527 records</span><button class="language-btn" id="languageToggle">FR</button><button class="outline-btn" id="downloadBtn">⇩&nbsp; Download view</button></div>
+        </header>
+
+        <section class="controls" aria-label="Dashboard filters">
+          <div class="filter-title"><span class="filter-icon">≡</span><div><b>Explore the cohort</b><small>Filters update every indicator</small></div></div>
+          <label>Health area<select id="areaFilter"><option>All health areas</option><option>Molyko</option><option>Buea Town</option><option>Buea Road</option><option>Bova</option></select></label>
+          <label>Sex<select id="sexFilter"><option>All participants</option><option>Female</option><option>Male</option></select></label>
+          <label>Age group<select id="ageFilter"><option>All ages</option><option>&lt; 30 years</option><option>30–44 years</option><option>45–59 years</option><option>60+ years</option></select></label>
+          <button class="reset-btn" id="resetBtn">Reset</button>
+          <div class="filter-summary" id="filterSummary">Showing all 527 screened participants</div>
+        </section>
+
+        <div class="page-view" id="overviewView">
+          <section class="hero-row">
+            <div><p class="eyebrow accent">HEALTHY HEARTS CAMEROON</p><h2>Where are elevated blood pressure<br /><em>signals</em> concentrated?</h2><p class="hero-copy">An interactive view of the cardiovascular screening pilot — designed to help clinical and community teams turn field data into action.</p></div>
+            <div class="hero-note"><span class="note-icon">↗</span><div><b>National snapshot</b><p>63.0% of screened participants were in the elevated BP or hypertension range.</p></div></div>
+          </section>
+
+          <section class="kpi-grid" id="kpiGrid">
+            <article class="kpi-card"><div class="kpi-top"><span class="kpi-label">PARTICIPANTS SCREENED</span><span class="kpi-icon blue">◉</span></div><strong data-kpi="participants">527</strong><small>Total records in pilot cohort</small><div class="kpi-line blue-line"></div></article>
+            <article class="kpi-card"><div class="kpi-top"><span class="kpi-label">ELEVATED BP / HTN</span><span class="kpi-icon red">↗</span></div><strong data-kpi="elevated">63.0<small>%</small></strong><small>332 participants</small><div class="kpi-line red-line"></div></article>
+            <article class="kpi-card"><div class="kpi-top"><span class="kpi-label">KNOWN DIAGNOSIS</span><span class="kpi-icon gold">✚</span></div><strong data-kpi="known">20.1<small>%</small></strong><small>106 participants</small><div class="kpi-line gold-line"></div></article>
+            <article class="kpi-card"><div class="kpi-top"><span class="kpi-label">REFERRED TO CARE</span><span class="kpi-icon green">↗</span></div><strong data-kpi="referral">36.8<small>%</small></strong><small>194 participants</small><div class="kpi-line green-line"></div></article>
+            <article class="kpi-card"><div class="kpi-top"><span class="kpi-label">RECEIVED COUNSELLING</span><span class="kpi-icon blue">✦</span></div><strong data-kpi="counselling">71.5<small>%</small></strong><small>377 participants</small><div class="kpi-line blue-line"></div></article>
+          </section>
+
+          <section class="map-card">
+            <div class="section-heading"><div><p class="eyebrow accent">GEOGRAPHIC VIEW</p><h3>Screening activity across health areas</h3></div><div class="map-actions"><button class="tab active" data-map-tab="hypertension">Elevated BP / HTN</button><button class="tab" data-map-tab="screened">Participants</button></div></div>
+            <div class="map-layout">
+              <div class="map-canvas">
+                <div class="map-label top-left"><span class="pulse"></span> Cameroon · Southwest Region</div>
+                <div id="realMap" class="real-map" aria-label="Map of Cameroon administrative regions"></div>
+                <svg class="cameroon-map legacy-map" viewBox="0 0 720 440" aria-hidden="true">
+                  <defs><filter id="shadow"><feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#0d1015" flood-opacity=".14" /></filter><linearGradient id="terrain" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f5f8fa"/><stop offset="1" stop-color="#e5eef1"/></linearGradient></defs>
+                  <path class="land-shadow" d="M144 55 L267 37 L394 69 L491 40 L576 83 L614 164 L595 264 L624 334 L557 388 L432 370 L347 394 L255 364 L190 322 L124 249 L104 157Z" filter="url(#shadow)" />
+                  <path class="land" d="M144 55 L267 37 L394 69 L491 40 L576 83 L614 164 L595 264 L624 334 L557 388 L432 370 L347 394 L255 364 L190 322 L124 249 L104 157Z" />
+                  <path class="region-line" d="M198 62 L226 142 L210 208 L256 261 L250 356 M297 51 L322 129 L297 205 L337 276 L347 394 M406 63 L391 153 L430 223 L424 368 M496 53 L478 132 L512 205 L484 368 M126 157 L210 208 L297 205 L391 153 L478 132 L593 161 M190 322 L256 261 L337 276 L430 223 L512 205 L595 264" />
+                  <text x="137" y="112">NORTH-WEST</text><text x="214" y="188">WEST</text><text x="326" y="173">ADAMAWA</text><text x="462" y="112">NORTH</text><text x="466" y="278">CENTRE</text><text x="231" y="300">LITTORAL</text><text x="356" y="323">SOUTH</text><text x="518" y="344">EAST</text>
+                  <g class="point" data-area="Molyko" transform="translate(270 245)"><circle r="18" class="halo"/><circle r="8" class="point-core high"/><text x="15" y="4">Molyko</text></g>
+                  <g class="point" data-area="Buea Town" transform="translate(304 267)"><circle r="18" class="halo"/><circle r="8" class="point-core medium"/><text x="15" y="4">Buea Town</text></g>
+                  <g class="point" data-area="Buea Road" transform="translate(246 281)"><circle r="18" class="halo"/><circle r="8" class="point-core low"/><text x="-78" y="4">Buea Road</text></g>
+                  <g class="point" data-area="Bova" transform="translate(334 294)"><circle r="18" class="halo"/><circle r="8" class="point-core high"/><text x="15" y="4">Bova</text></g>
+                  <g class="point" data-area="Other sites" transform="translate(211 232)"><circle r="14" class="halo"/><circle r="6" class="point-core medium"/><text x="-77" y="4">Other sites</text></g>
+                </svg>
+                <div class="map-legend"><b>Elevated BP / HTN</b><div><span class="legend-dot low"></span> 0–50%</div><div><span class="legend-dot medium"></span> 50–70%</div><div><span class="legend-dot high"></span> 70%+</div></div>
+                <div class="map-footnote">ADM1 boundaries: geoBoundaries · health-area values shown only where source data exists</div>
+              </div>
+              <aside class="map-side"><div class="side-stat"><span class="side-stat-label">SELECTED AREA</span><h4 id="selectedArea">All health areas</h4><p id="selectedAreaCopy">Select a point on the map to explore the area profile.</p></div><div class="side-metric"><span>SCREENED</span><strong id="areaScreened">527</strong><small>participants</small></div><div class="side-metric"><span>ELEVATED BP / HTN</span><strong id="areaRate">63.0%</strong><small>of participants</small></div><button class="primary-btn" id="viewInsightsBtn">View cohort insights <span>→</span></button><div class="data-note"><span>i</span><p>Health-area values are placeholders for the geographic breakdown. Replace them with the area-level export when available.</p></div></aside>
+            </div>
+          </section>
+        </div>
+
+        <div class="page-view hidden" id="mapView"><section class="inner-page"><p class="eyebrow accent">AREA MAP</p><h2>Explore Cameroon administrative regions</h2><p class="hero-copy">Click a region or a mapped screening site. The PDF contains national screening totals; region and site totals are kept separate until an area-level export is supplied.</p><div class="standalone-map-shell"><div id="standaloneMap" class="real-map"></div><aside class="standalone-map-note"><b>Map layers</b><span>Administrative regions</span><span>Known pilot sites</span><small>Boundary source: geoBoundaries ADM1. Site-level rates are illustrative until the health-area dataset is connected.</small><button class="primary-btn" data-go="overview">Back to overview <span>→</span></button></aside></div></section></div>
+        <div class="page-view hidden" id="insightsView"><section class="inner-page"><p class="eyebrow accent">COHORT INSIGHTS</p><h2>What did the screening find?</h2><div class="insight-grid"><article class="insight-card"><div class="section-heading"><h3>Blood pressure categories</h3><span class="micro-label">N = 527</span></div><div class="bars"><div><span>Normal BP</span><b>37.0%</b><i style="width:37%"></i></div><div><span>Elevated BP</span><b>23.1%</b><i class="elevated" style="width:23.1%"></i></div><div><span>Hypertension range</span><b>35.3%</b><i class="hypertension" style="width:35.3%"></i></div><div><span>Severely elevated</span><b>4.6%</b><i class="severe" style="width:4.6%"></i></div></div></article><article class="insight-card"><div class="section-heading"><h3>Who was screened?</h3><span class="micro-label">SEX & AGE</span></div><div class="split"><div class="donut"><div><strong>65.3%</strong><small>female</small></div></div><div class="age-list"><div><span>&lt; 30</span><b>18.2%</b></div><div><span>30–44</span><b>33.0%</b></div><div><span>45–59</span><b>25.8%</b></div><div><span>60+</span><b>23.0%</b></div></div></div></article></div></section></div>
+        <div class="page-view hidden" id="detailsView"><section class="inner-page"><p class="eyebrow accent">CLINICAL & CARE</p><h2>Risk factors and what happens next</h2><div class="detail-grid"><article class="insight-card wide"><div class="section-heading"><h3>Risk factors among elevated BP / HTN</h3><span class="micro-label">N = 332</span></div><div class="risk-table"><div><b>BMI · Obesity</b><span>80.9%</span><small>148 / 183</small></div><div><b>BMI · Overweight</b><span>55.6%</span><small>89 / 160</small></div><div><b>BMI · Normal weight</b><span>52.2%</span><small>94 / 180</small></div><div><b>Family history · Yes</b><span>73.7%</span><small>115 / 156</small></div><div><b>Family history · No</b><span>59.3%</span><small>188 / 317</small></div><div><b>Current smokers</b><span>90.0%</span><small>9 / 10</small></div><div><b>Former smokers</b><span>73.9%</span><small>34 / 46</small></div><div><b>Never smokers</b><span>61.4%</span><small>289 / 471</small></div><div><b>Regular physical activity</b><span>64.2%</span><small>188 / 293</small></div><div><b>No regular activity</b><span>61.4%</span><small>143 / 233</small></div></div></article><article class="insight-card"><div class="section-heading"><h3>Referral acceptance</h3><span class="micro-label">192 RECOMMENDED</span></div><div class="referral"><div class="accept-ring"><strong>88.0%</strong><small>accepted</small></div><div><p><b>169</b> accepted</p><p><b>23</b> refused</p><div class="mini-bar"><i style="width:88%"></i></div></div></div></article><article class="insight-card"><div class="section-heading"><h3>Counselling topics</h3><span class="micro-label">BASE = 377</span></div><div class="topic-list"><div><span>Healthy diet</span><b>60.5% · 228</b></div><div><span>BP / Hypertension</span><b>58.6% · 221</b></div><div><span>Physical activity</span><b>50.9% · 192</b></div><div><span>Alcohol reduction</span><b>46.9% · 177</b></div><div><span>Referral advice</span><b>37.4% · 141</b></div><div><span>Medication adherence</span><b>21.2% · 80</b></div><div><span>Smoking cessation</span><b>3.2% · 12</b></div></div></article></div></section></div>
+        <div class="page-view hidden" id="definitionsView"><section class="inner-page"><p class="eyebrow accent">DATA DICTIONARY</p><h2>Definitions used in this view</h2><div class="definition-list"><div><b>Elevated BP / HTN</b><span>Participants categorized as Elevated BP, Hypertension range, or Severely elevated BP.</span></div><div><b>Known diagnosis</b><span>Known_HTN = “Yes” in the screening record.</span></div><div><b>Referred to care</b><span>Referral_Recommended = “Yes” in the screening record.</span></div><div><b>Source</b><span>DDC Spécifications Techniques PowerBI Healthy Hearts · pilot cohort N = 527.</span></div></div></section></div>
+      </main>
+    </div>
+    <div class="toast" id="toast">View downloaded</div>
+    <div class="modal hidden" id="aboutModal"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><p class="eyebrow accent">ABOUT THE VIEW</p><h3>Healthy Hearts Cameroon</h3><p>This dashboard follows the map-first interaction pattern of the reference platform and translates the supplied technical brief into a decision-support view.</p><div class="modal-rule"></div><p class="modal-small">National indicators are taken directly from the PDF specification. The Cameroon region boundaries come from geoBoundaries ADM1. The PDF does not contain area-level totals, so no health-area result is fabricated.</p></div></div>
+    <div class="modal hidden" id="feedbackModal"><div class="modal-card"><button class="modal-close" data-close-modal>×</button><p class="eyebrow accent">SEND FEEDBACK</p><h3>Help improve this dashboard</h3><p>Tell the team about a data issue, a missing health area, or a visual improvement.</p><label class="modal-label">Name (optional)<input id="feedbackName" /></label><label class="modal-label">Feedback<textarea id="feedbackText" placeholder="Please type some feedback."></textarea></label><label class="checkline"><input type="checkbox" checked /> Include a screenshot of this page</label><button class="primary-btn" id="sendFeedback">Send feedback <span>→</span></button></div></div>
+    <script src="./cameroon-map-data.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.js" crossorigin=""></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
